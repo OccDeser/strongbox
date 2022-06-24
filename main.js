@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:01:00
- * @LastEditTime: 2022-06-24 23:20:49
+ * @LastEditTime: 2022-06-24 23:49:01
  * @FilePath: /strongbox/main.js
  * @Description: main
  * @Encoding: UTF-8
@@ -19,6 +19,7 @@ function createWindow() {
         icon: nativeImage.createFromPath('public/favicon.ico'),
         webPreferences: {
             nodeIntegration: true,
+            contextIsolation: false,
             webviewTag: true,
             webSecurity: false,
             nodeIntegrationInSubFrames: true

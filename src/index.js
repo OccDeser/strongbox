@@ -1,6 +1,13 @@
+/*
+ * @Author: OccDeser 2287109950@qq.com
+ * @Date: 2022-06-24 22:58:27
+ * @LastEditTime: 2022-06-24 23:38:26
+ * @FilePath: /strongbox/src/index.js
+ * @Description: 
+ * @Encoding: UTF-8
+ */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
