@@ -24,7 +24,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-start": "electron .",
-    "package": "electron-packager . strongbox --platform=darwin --arch=arm64 --electron-version 19.0.6 --overwrite"
+    "packMacX64": "electron-packager . strongbox --platform=darwin --arch=x64  --electron-version 19.0.6 --overwrite",
+    "packMacM1": "electron-packager . strongbox --platform=darwin --arch=x64  --electron-version 19.0.6 --overwrite",
+    "packWin": "electron-packager . strongbox --platform=win32 --arch=x64 --electron-version 19.0.6 --overwrite"
   },
   "eslintConfig": {
     "extends": [
