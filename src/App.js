@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:37:56
- * @LastEditTime: 2022-06-26 18:43:00
+ * @LastEditTime: 2022-06-26 21:09:12
  * @FilePath: /strongbox/src/App.js
  * @Description: 
  * @Encoding: UTF-8
@@ -131,6 +131,7 @@ export default class App extends Component {
             alert_message: "",
 
             showBoxesBar: false,
+            showBoxItems: false,
             showBoxName: "Select a box",
         };
     }
@@ -158,6 +159,7 @@ export default class App extends Component {
 
     boxOnClick = (boxName) => {
         this.setState({
+            showBoxItems: true,
             showBoxName: boxName,
         });
     }
@@ -207,6 +209,7 @@ export default class App extends Component {
                     boxesPath={BOXES_PATH}
                     boxOnClick={this.boxOnClick}
                     boxesOnChange={this.boxesOnChange}
+                    drawerOpen={this.handleDrawerOpen}
                     setAlert={this.setAlert}
                 />
             </Drawer>
@@ -235,8 +238,10 @@ export default class App extends Component {
                 </Collapse>
                 <BoxItems
                     boxName={this.state.showBoxName}
-                    boxesPath={this.state.boxesPath}
+                    boxesPath={BOXES_PATH}
+                    setAlert={this.setAlert}
                 />
+
             </Box>
 
 
