@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:37:56
- * @LastEditTime: 2022-06-26 21:09:12
+ * @LastEditTime: 2022-06-26 21:23:42
  * @FilePath: /strongbox/src/App.js
  * @Description: 
  * @Encoding: UTF-8
@@ -133,6 +133,8 @@ export default class App extends Component {
             showBoxesBar: false,
             showBoxItems: false,
             showBoxName: "Select a box",
+
+            strongBoxPwd: "M@g!c 57ron9 130x",
         };
     }
 
@@ -237,6 +239,7 @@ export default class App extends Component {
                     }
                 </Collapse>
                 <BoxItems
+                    boxpwd={this.state.strongBoxPwd}
                     boxName={this.state.showBoxName}
                     boxesPath={BOXES_PATH}
                     setAlert={this.setAlert}

@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-25 22:50:38
- * @LastEditTime: 2022-06-26 21:07:27
+ * @LastEditTime: 2022-06-26 22:13:26
  * @FilePath: /strongbox/src/BoxItems.js
  * @Description: Show all items in a box
  * @Encoding: UTF-8
@@ -19,6 +19,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 
 const fs = window.require("fs");
+const crypto = window.require("crypto");
 
 export default class BoxItems extends Component {
     state = {
@@ -29,12 +30,45 @@ export default class BoxItems extends Component {
         new_value: "",
     }
 
+    genKey = (pwd) => {
+        const hash = crypto.createHash("md5");
+        hash.update(pwd);
+        const pwdHash = hash.digest("hex");
+
+        const sha256 = crypto.createHash("sha256");
+        sha256.update(pwd + pwdHash);
+        const key = sha256.digest();
+        return key;
+    }
+
     loadData = (fileData) => {
-        return JSON.parse(fileData);
+        const { boxpwd } = this.props;
+        const key = this.genKey(boxpwd);
+        const data = Buffer.from(fileData, "base64").toString("hex");
+        const iv = data.slice(0, 16);
+        const ciphertext = data.slice(16);
+
+        const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+        var decrypted = decipher.update(ciphertext, "hex", "utf8");
+        decrypted += decipher.final("utf8");
+
+        return JSON.parse(decrypted);
     }
 
     dumpData = (boxData) => {
-        return JSON.stringify(boxData);
+        const data = Buffer.from(JSON.stringify(boxData));
+
+        const { boxpwd } = this.props;
+        const key = this.genKey(boxpwd);
+        const iv = crypto.randomBytes(16).toString("hex").slice(0, 16);
+
+        const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+        var encrypted = cipher.update(data, "utf8", "hex");
+        encrypted += cipher.final("hex");
+
+        const fileData = Buffer.from(iv + encrypted, "hex").toString("base64");
+
+        return fileData;
     }
 
     newBoxItem = () => {
@@ -85,7 +119,7 @@ export default class BoxItems extends Component {
                         this.props.setAlert("error", "Box Data Read Error", err.message);
                         show = false;
                     } else {
-                        boxData = this.loadData(data);
+                        boxData = this.loadData(data.toString());
                     }
                     this.setState({
                         show: show,
