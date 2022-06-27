@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:37:56
- * @LastEditTime: 2022-06-26 21:23:42
+ * @LastEditTime: 2022-06-27 12:20:21
  * @FilePath: /strongbox/src/App.js
  * @Description: 
  * @Encoding: UTF-8
@@ -11,6 +11,7 @@ import React, { Component } from "react";
 
 import BoxItems from './BoxItems';
 import BoxesList from './BoxesList';
+import SettingDialog from "./SettingDialog";
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -19,12 +20,13 @@ import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Collapse from '@mui/material/Collapse';
-import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import AlertTitle from '@mui/material/AlertTitle';
 import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import Settings from '@mui/icons-material/Settings';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { styled } from '@mui/material/styles';
@@ -117,10 +119,13 @@ export default class App extends Component {
 
         // load data
         var boxes = [];
+        var enableCustomPwd = false;
         if (fs.existsSync(BOXES_LIST_FILE)) {
-            boxes = JSON.parse(fs.readFileSync(BOXES_LIST_FILE));
+            var data = JSON.parse(fs.readFileSync(BOXES_LIST_FILE));
+            boxes = data.boxes;
+            enableCustomPwd = data.enableCustomPwd;
         } else {
-            fs.writeFileSync(BOXES_LIST_FILE, JSON.stringify(boxes));
+            fs.writeFileSync(BOXES_LIST_FILE, JSON.stringify({ boxes, enableCustomPwd }));
         }
 
         this.state = {
@@ -134,7 +139,11 @@ export default class App extends Component {
             showBoxItems: false,
             showBoxName: "Select a box",
 
-            strongBoxPwd: "M@g!c 57ron9 130x",
+            showSettingDialog: false,
+
+            enableCustomPwd: enableCustomPwd,
+            magicPwd: "M@g!c 57ron9 130x",
+            customPwd: "Cu5t0m P@55w0rd",
         };
     }
 
@@ -147,11 +156,8 @@ export default class App extends Component {
         });
     }
 
-    boxesOnChange = (boxes) => {
-        this.setState({
-            boxes: boxes,
-        });
-        fs.writeFile(BOXES_LIST_FILE, JSON.stringify(boxes), (err) => {
+    saveConfig = (config) => {
+        fs.writeFile(BOXES_LIST_FILE, JSON.stringify(config), (err) => {
             if (err) {
                 console.log(err);
                 this.SetAlert("error", "Configuration Saved Error", err.message);
@@ -159,10 +165,48 @@ export default class App extends Component {
         });
     }
 
+    boxesOnChange = (boxes) => {
+        this.setState({
+            boxes: boxes,
+        });
+        this.saveConfig({
+            boxes,
+            enableCustomPwd: this.state.enableCustomPwd
+        });
+    }
+
+    enableCustomPwdOnChange = (enableCustomPwd) => {
+        this.setState({
+            enableCustomPwd: enableCustomPwd,
+        });
+        this.saveConfig({
+            boxes: this.state.boxes,
+            enableCustomPwd: enableCustomPwd
+        });
+    }
+
+    setCustomPwd = (customPwd) => {
+        this.setState({
+            customPwd: customPwd,
+        });
+    }
+
     boxOnClick = (boxName) => {
         this.setState({
             showBoxItems: true,
             showBoxName: boxName,
+        });
+    }
+
+    handleSettingOpen = () => {
+        this.setState({
+            showSettingDialog: true,
+        });
+    }
+
+    handleSettingClose = () => {
+        this.setState({
+            showSettingDialog: false,
         });
     }
 
@@ -175,9 +219,17 @@ export default class App extends Component {
     }
 
     render() {
+        console.log('statue', this.state.enableCustomPwd)
         return <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-
+            <SettingDialog
+                open={this.state.showSettingDialog}
+                customPwd={this.state.customPwd}
+                enableCustomPwd={this.state.enableCustomPwd}
+                onClose={this.handleSettingClose}
+                setCustomPwd={this.setCustomPwd}
+                enableCustomPwdOnChange={this.enableCustomPwdOnChange}
+            />
             <AppBar position="fixed" open={this.state.showBoxesBar}>
                 <Toolbar>
                     <IconButton
@@ -199,7 +251,19 @@ export default class App extends Component {
             </AppBar>
 
             <Drawer variant="permanent" open={this.state.showBoxesBar}>
-                <DrawerHeader>
+                <DrawerHeader style={{ justifyContent: "space-between" }}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="settings"
+                        onClick={() => this.handleSettingOpen()}
+                        edge="end"
+                        sx={{ marginLeft: 0.8, }}
+                    >
+                        <Settings />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        Settings
+                    </Typography>
                     <IconButton onClick={this.handleDrawerClose}>
                         <ChevronLeftIcon />
                     </IconButton>
@@ -239,7 +303,7 @@ export default class App extends Component {
                     }
                 </Collapse>
                 <BoxItems
-                    boxpwd={this.state.strongBoxPwd}
+                    boxpwd={this.state.enableCustomPwd ? this.state.customPwd : this.state.magicPwd}
                     boxName={this.state.showBoxName}
                     boxesPath={BOXES_PATH}
                     setAlert={this.setAlert}

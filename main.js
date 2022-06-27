@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:01:00
- * @LastEditTime: 2022-06-26 22:26:20
+ * @LastEditTime: 2022-06-27 10:58:24
  * @FilePath: /strongbox/main.js
  * @Description: main
  * @Encoding: UTF-8
@@ -27,14 +27,14 @@ function createWindow() {
     });
 
     // // 加载应用 --打包react应用后，__dirname为当前文件路径
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, './build/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+    // mainWindow.loadURL(url.format({
+    //     pathname: path.join(__dirname, './build/index.html'),
+    //     protocol: 'file:',
+    //     slashes: true
+    // }));
 
     // 加载应用--开发阶段  需要运行 npm run start
-    // mainWindow.loadURL('http://localhost:3000/');
+    mainWindow.loadURL('http://localhost:3000/');
 
     // 解决应用启动白屏问题
     mainWindow.on('ready-to-show', () => {
