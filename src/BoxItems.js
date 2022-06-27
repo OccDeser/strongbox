@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-25 22:50:38
- * @LastEditTime: 2022-06-26 22:13:26
+ * @LastEditTime: 2022-06-27 12:21:15
  * @FilePath: /strongbox/src/BoxItems.js
  * @Description: Show all items in a box
  * @Encoding: UTF-8
@@ -31,6 +31,7 @@ export default class BoxItems extends Component {
     }
 
     genKey = (pwd) => {
+        console.log("Using password: " + pwd);
         const hash = crypto.createHash("md5");
         hash.update(pwd);
         const pwdHash = hash.digest("hex");
@@ -48,9 +49,16 @@ export default class BoxItems extends Component {
         const iv = data.slice(0, 16);
         const ciphertext = data.slice(16);
 
-        const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
-        var decrypted = decipher.update(ciphertext, "hex", "utf8");
-        decrypted += decipher.final("utf8");
+        try {
+            const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+            var decrypted = decipher.update(ciphertext, "hex", "utf8");
+            decrypted += decipher.final("utf8");
+        } catch (e) {
+            console.log(e);
+            this.props.setAlert("error", "Box Data Decrypt Error", e.message);
+            return [];
+        }
+
 
         return JSON.parse(decrypted);
     }
