@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:01:00
- * @LastEditTime: 2022-06-27 10:58:24
+ * @LastEditTime: 2022-06-27 12:59:14
  * @FilePath: /strongbox/main.js
  * @Description: main
  * @Encoding: UTF-8
@@ -13,8 +13,8 @@ const url = require('url')
 
 function createWindow() {
     let mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 935,
+        height: 630,
         title: "Strongbox",
         icon: nativeImage.createFromPath('public/favicon.ico'),
         webPreferences: {
