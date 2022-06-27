@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-25 22:50:38
- * @LastEditTime: 2022-06-27 12:21:15
+ * @LastEditTime: 2022-06-27 12:49:38
  * @FilePath: /strongbox/src/BoxItems.js
  * @Description: Show all items in a box
  * @Encoding: UTF-8
@@ -31,7 +31,6 @@ export default class BoxItems extends Component {
     }
 
     genKey = (pwd) => {
-        console.log("Using password: " + pwd);
         const hash = crypto.createHash("md5");
         hash.update(pwd);
         const pwdHash = hash.digest("hex");

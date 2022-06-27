@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:37:56
- * @LastEditTime: 2022-06-27 12:39:15
+ * @LastEditTime: 2022-06-27 12:48:56
  * @FilePath: /strongbox/src/App.js
  * @Description: 
  * @Encoding: UTF-8
@@ -188,7 +188,6 @@ export default class App extends Component {
     }
 
     setCustomPwd = (customPwd) => {
-        console.log(customPwd);
         this.setState({
             customPwd: customPwd,
         });
@@ -222,7 +221,6 @@ export default class App extends Component {
     }
 
     render() {
-        console.log('statue', this.state.enableCustomPwd)
         return <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             {this.state.showSettingDialog && <SettingDialog
@@ -235,6 +233,7 @@ export default class App extends Component {
             />}
             {this.state.showCustomDialog && <CustomDialog
                 open={this.state.showCustomDialog}
+                enableCustomPwd={this.state.enableCustomPwd}
                 onClose={() => { this.setState({ showCustomDialog: false }) }}
                 setCustomPwd={this.setCustomPwd}
             />}
@@ -292,7 +291,7 @@ export default class App extends Component {
                 <DrawerHeader />
                 <Collapse in={this.state.alert_open}>
                     {
-                        <Alert
+                        this.state.alert_open && <Alert
                             sx={{ mb: 2 }}
                             severity={this.state.alert_type}
                             action={
