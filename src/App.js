@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:37:56
- * @LastEditTime: 2022-06-27 12:20:21
+ * @LastEditTime: 2022-06-27 12:39:15
  * @FilePath: /strongbox/src/App.js
  * @Description: 
  * @Encoding: UTF-8
@@ -11,6 +11,7 @@ import React, { Component } from "react";
 
 import BoxItems from './BoxItems';
 import BoxesList from './BoxesList';
+import CustomDialog from './CustomDialog';
 import SettingDialog from "./SettingDialog";
 
 import Box from '@mui/material/Box';
@@ -139,6 +140,7 @@ export default class App extends Component {
             showBoxItems: false,
             showBoxName: "Select a box",
 
+            showCustomDialog: true,
             showSettingDialog: false,
 
             enableCustomPwd: enableCustomPwd,
@@ -186,6 +188,7 @@ export default class App extends Component {
     }
 
     setCustomPwd = (customPwd) => {
+        console.log(customPwd);
         this.setState({
             customPwd: customPwd,
         });
@@ -222,14 +225,19 @@ export default class App extends Component {
         console.log('statue', this.state.enableCustomPwd)
         return <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <SettingDialog
+            {this.state.showSettingDialog && <SettingDialog
                 open={this.state.showSettingDialog}
                 customPwd={this.state.customPwd}
                 enableCustomPwd={this.state.enableCustomPwd}
                 onClose={this.handleSettingClose}
                 setCustomPwd={this.setCustomPwd}
                 enableCustomPwdOnChange={this.enableCustomPwdOnChange}
-            />
+            />}
+            {this.state.showCustomDialog && <CustomDialog
+                open={this.state.showCustomDialog}
+                onClose={() => { this.setState({ showCustomDialog: false }) }}
+                setCustomPwd={this.setCustomPwd}
+            />}
             <AppBar position="fixed" open={this.state.showBoxesBar}>
                 <Toolbar>
                     <IconButton
