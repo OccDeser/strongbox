@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-25 22:50:38
- * @LastEditTime: 2022-06-27 12:49:38
+ * @LastEditTime: 2022-07-01 22:44:57
  * @FilePath: /strongbox/src/BoxItems.js
  * @Description: Show all items in a box
  * @Encoding: UTF-8
@@ -17,9 +17,43 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import ButtonBase from '@mui/material/ButtonBase';
+
+import copy from "copy-to-clipboard";
+import { IoCopyOutline } from 'react-icons/io5';
 
 const fs = window.require("fs");
 const crypto = window.require("crypto");
+
+function ValueCell(props) {
+    var show_value = props.value.substring(0, 1);
+    for (var i = 0; i < 4; i++) {
+        show_value += "****";
+    }
+    show_value += props.value.substr(-3);
+
+    const copyToClipboard = () => {
+        copy(props.value);
+    }
+
+    return (
+        <Tooltip
+            title="Copy to Clipboard"
+            placement="bottom-start"
+        >
+            <ButtonBase onClick={copyToClipboard}>
+                <IoCopyOutline />
+                <span style={{
+                    display: "inlineBlock",
+                    marginLeft: 5
+                }}>
+                    {show_value}
+                </span>
+            </ButtonBase>
+        </Tooltip>
+    );
+}
 
 export default class BoxItems extends Component {
     state = {
@@ -156,7 +190,7 @@ export default class BoxItems extends Component {
         return <>
             {
                 this.state.show && <div style={{ marginTop: -15 }}>
-                    <div style={{ marginLeft: 10 }}><h4>{`Box ${this.props.boxName}`}</h4></div>
+                    <div style={{ marginLeft: 10 }}><h4>{`${this.props.boxName}`}</h4></div>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -170,7 +204,7 @@ export default class BoxItems extends Component {
                                     tableData.map((row) => (
                                         <TableRow key={row.name + row.value}>
                                             <TableCell>{row.name}</TableCell>
-                                            <TableCell>{row.value}</TableCell>
+                                            <TableCell>{<ValueCell value={row.value} />}</TableCell>
                                         </TableRow>
                                     ))
                                 }

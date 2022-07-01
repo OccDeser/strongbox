@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-25 22:33:12
- * @LastEditTime: 2022-06-26 21:11:27
+ * @LastEditTime: 2022-07-01 22:44:18
  * @FilePath: /strongbox/src/BoxesList.js
  * @Description: Show all boxes
  * @Encoding: UTF-8
@@ -101,7 +101,7 @@ export default class BoxesList extends Component {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {`Do you want to remove box '${this.state.removeBoxName}'?`}
+                    {`Do you want to remove box ${this.state.removeBoxName}?`}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">

@@ -1,7 +1,7 @@
 /*
  * @Author: OccDeser 2287109950@qq.com
  * @Date: 2022-06-24 23:37:56
- * @LastEditTime: 2022-06-27 12:48:56
+ * @LastEditTime: 2022-06-27 23:17:20
  * @FilePath: /strongbox/src/App.js
  * @Description: 
  * @Encoding: UTF-8
@@ -268,7 +268,7 @@ export default class App extends Component {
                     >
                         <Settings />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h7" noWrap component="div">
                         Settings
                     </Typography>
                     <IconButton onClick={this.handleDrawerClose}>
